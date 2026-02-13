@@ -1,0 +1,16 @@
+<h2>User Dashboard</h2>
+<button onclick="load()">Load Data</button>
+<pre id="output"></pre>
+
+<script>
+async function load(){
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("/dashboard",{
+    headers:{Authorization:"Bearer "+token}
+  });
+
+  const data = await res.json();
+  output.innerText = JSON.stringify(data,null,2);
+}
+</script>

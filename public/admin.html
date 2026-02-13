@@ -1,0 +1,16 @@
+<h2>Admin Panel 👑</h2>
+<button onclick="getUsers()">Get All Users</button>
+<pre id="output"></pre>
+
+<script>
+async function getUsers(){
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("/admin/users",{
+    headers:{Authorization:"Bearer "+token}
+  });
+
+  const data = await res.json();
+  output.innerText = JSON.stringify(data,null,2);
+}
+</script>
