@@ -3,7 +3,7 @@ const router = express.Router();
 const Order = require("../models/order");
 const User = require("../models/user");
 const Price = require("../models/price");
-const Log = require("../models/Log");
+const Log = require("../models/log");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
