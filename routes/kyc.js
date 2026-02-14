@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
-const Kyc = require("../models/kyc");
+const Kyc = require("../models/Kyc");
 const auth = require("../middleware/auth");
 
 const storage = multer.diskStorage({

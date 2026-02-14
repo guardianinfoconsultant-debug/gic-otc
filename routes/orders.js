@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Order = require("../models/order");
-const User = require("../models/user");
-const Price = require("../models/price");
-const Log = require("../models/log");
+const Order = require("../models/Order");
+const User = require("../models/User");
+const Price = require("../models/Price");
+const Log = require("../models/Log");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
