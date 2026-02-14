@@ -1,16 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
 <h2>User Dashboard</h2>
-<button onclick="load()">Load Data</button>
-<pre id="output"></pre>
+
+<div>
+  <h3>Wallet Balance: <span id="wallet">0</span> GEL</h3>
+  <h3>KYC Status: <span id="kyc"></span></h3>
+</div>
+
+<h3>Create Order</h3>
+
+<select id="type">
+  <option value="buy">Buy GEL</option>
+  <option value="sell">Sell GEL</option>
+</select>
+
+<input type="number" id="amount" placeholder="Amount">
+<button onclick="createOrder()">Submit</button>
+
+<h3>My Orders</h3>
+<div id="orders"></div>
 
 <script>
-async function load(){
-  const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-  const res = await fetch("/dashboard",{
-    headers:{Authorization:"Bearer "+token}
+async function loadUser() {
+  const res = await fetch("/api/auth/me", {
+    headers: { Authorization: token }
+  });
+  const data = await res.json();
+
+  document.getElementById("wallet").innerText = data.wallet;
+  document.getElementById("kyc").innerText = data.kycStatus;
+}
+
+async function createOrder() {
+  const type = document.getElementById("type").value;
+  const amount = document.getElementById("amount").value;
+
+  await fetch("/api/orders/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ type, amount })
   });
 
-  const data = await res.json();
-  output.innerText = JSON.stringify(data,null,2);
+  loadOrders();
 }
+
+async function loadOrders() {
+  const res = await fetch("/api/orders/my", {
+    headers: { Authorization: token }
+  });
+  const data = await res.json();
+
+  let html = "";
+  data.forEach(o => {
+    html += `<p>${o.type} - ${o.amount} - ${o.status}</p>`;
+  });
+
+  document.getElementById("orders").innerHTML = html;
+}
+
+loadUser();
+loadOrders();
 </script>
+
+</body>
+</html>
